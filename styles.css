@@ -1,4 +1,4 @@
-body{
+body {
     padding: 0;
     margin: 0;
     display: grid;
@@ -7,10 +7,42 @@ body{
     max-height: 100ch;
 }
 
-header, footer{
+header,
+footer {
+    display: flex;
     background-color: #4682b4;
+    justify-content: center;
 }
 
-main{
+header h1 {
+    display: flex;
+    color: white;
+    justify-content: center;
+}
+
+
+
+form input,
+form button {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 7px;
+    border-radius: 7px;
+    border-color: white;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+main {
     background-color: #f0f0f0;
+}
+
+form input {
+    padding-right: 593px;
+}
+
+form button {
+    position: absolute;
 }
