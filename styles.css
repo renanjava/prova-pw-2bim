@@ -36,13 +36,39 @@ form {
 }
 
 main {
+    display: flex;
+    justify-content: center;
     background-color: #f0f0f0;
 }
 
 form input {
-    padding-right: 593px;
+    padding-right: 493px;
 }
 
 form button {
     position: absolute;
 }
+
+li {
+    list-style: none;
+}
+
+img {
+    height: 190px;
+    width: 220px;
+}
+
+div {
+    display: flex;
+    justify-content: baseline;
+    gap: 10px;
+    margin-left: 200px;
+    margin-right: 250px;
+    margin-top: 10px;
+}
+
+h2 {
+    margin: 0px;
+}
+
+p {}
