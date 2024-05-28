@@ -14,20 +14,16 @@ footer {
     justify-content: center;
 }
 
-header h1 {
+header h1,
+footer p {
     display: flex;
     color: white;
     justify-content: center;
 }
 
-
-
 form input,
-form button {
-    padding-top: 7px;
-    padding-bottom: 7px;
-    padding-left: 7px;
-    border-radius: 7px;
+button {
+    background-color: white;
     border-color: white;
 }
 
@@ -43,10 +39,20 @@ main {
 
 form input {
     padding-right: 493px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 7px;
+    border-radius: 7px;
 }
 
-form button {
+button {
     position: absolute;
+    margin-top: 82px;
+    margin-left: 630px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    border-color: transparent;
 }
 
 li {
@@ -58,17 +64,34 @@ img {
     width: 220px;
 }
 
-div {
+img:nth-of-type(2) {
+    padding: 60px;
+}
+
+.div-imagem-noticia {
     display: flex;
-    justify-content: baseline;
     gap: 10px;
-    margin-left: 200px;
-    margin-right: 250px;
+    margin-left: 310px;
+    margin-right: 390px;
     margin-top: 10px;
 }
+
+.div-introducao-noticia {}
+
+.div-informacao-noticia {}
 
 h2 {
     margin: 0px;
 }
 
-p {}
+svg {
+    position: absolute;
+    margin-left: 1000px;
+    margin-top: 85px;
+}
+
+p {
+    margin: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
