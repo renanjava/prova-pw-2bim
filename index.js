@@ -6,7 +6,7 @@ fetch("https://servicodados.ibge.gov.br/api/v3/noticias/?qtd=10")
         jsonData.items.forEach(element => {
             gerarConteudo(element.titulo,
                 "https://agenciadenoticias.ibge.gov.br/" + JSON.parse(element.imagens).image_intro,
-                element.introducao, null, element.editorias)
+                element.introducao, element.data_publicacao, element.editorias)
         });
     })
 
@@ -30,7 +30,7 @@ function gerarConteudo(titulo, imagem, introducao, data, hashtag) {
     h2.textContent = titulo
     p.textContent = introducao
     p2.textContent = "#" + hashtag
-    p3.textContent = "Publicado hoje"
+    p3.textContent = retornaDiferencaData(data)
     button.textContent = "Leia mais"
     div3.appendChild(p2)
     div3.appendChild(p3)
@@ -42,4 +42,44 @@ function gerarConteudo(titulo, imagem, introducao, data, hashtag) {
     div.appendChild(div2)
     li.appendChild(div)
     ul.appendChild(li)
+}
+
+function retornaDiferencaData(data) {
+    const dataAtual = new Date().toLocaleString('pt-BR', { timezone: 'UTC' }).replace(",", "")
+    let dataPublicacao = ""
+    let horaPublicacao = ""
+    for (let i = 0; i < 10; i++) {
+        if (i < 9)
+            dataPublicacao += data[i]
+        horaPublicacao += data[i + 9]
+    }
+
+    var diferenca = moment(dataAtual, "DD/MM/YYYY HH:mm:ss").diff(moment(data, "DD/MM/YYYY HH:mm:ss"))
+    diferencaTempo = Math.floor(moment.duration(diferenca).asDays())
+
+    if (diferencaTempo == 1)
+        diferencaTipo = "dia"
+    else if (diferencaTempo > 1) {
+        if (diferencaTempo < 30)
+            diferencaTipo = "dias"
+        else {
+            diferencaTempo = Math.floor(moment.duration(diferenca).asMouths())
+            diferencaTipo = (diferencaTempo == 1 ? "mes" : "meses")
+        }
+    } else {
+        diferencaTempo = Math.floor(moment.duration(diferenca).asHours())
+        if (diferencaTempo < 1) {
+            diferencaTempo = Math.floor(moment.duration(diferenca).asMinutes())
+            if (diferencaMinutos < 1) {
+                diferencaTempo = diferencaMeses = Math.floor(moment.duration(diferenca).asSeconds())
+            }
+        } else {
+            diferencaTipo = (diferencaTempo == 1 ? "hora" : "horas")
+        }
+
+    }
+
+
+    return "Publicado há " + diferencaTempo + " " + diferencaTipo
+
 }
