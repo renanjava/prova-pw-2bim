@@ -133,3 +133,7 @@ p {
     color: black;
     border-color: transparent
 }
+
+#button-leia-mais:hover {
+    opacity: 0.8;
+}

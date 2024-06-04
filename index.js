@@ -1,17 +1,20 @@
 const urlSearchParams = new URLSearchParams(location.search)
 const paginaAtual = urlSearchParams.get("page")
+
+insereNoticiasNaPagina()
+
+//const divPaginacao = document.getElementById("paginacao")
+//const arrayBotoes = []
+
+//divPaginacao.appendChild(arrayBotoes)
 if (paginaAtual == null) {
     history.pushState(null, null, window.location.pathname + "?qtd=10")
     document.getElementById("1").disabled = true
-} else {
+} else
     document.getElementById(paginaAtual).disabled = true
-}
-insereNoticiasNaPagina()
 
 function insereNoticiasNaPagina() {
-    const urlSearchParams = new URLSearchParams(location.search)
-    const pagina = urlSearchParams.get("page")
-    let quantidadeNoticias = (pagina > 1 ? urlSearchParams.get("qtd") * pagina : urlSearchParams.get("qtd"))
+    let quantidadeNoticias = (paginaAtual > 1 ? urlSearchParams.get("qtd") * paginaAtual : urlSearchParams.get("qtd"))
     fetch(`https://servicodados.ibge.gov.br/api/v3/noticias/?qtd=${quantidadeNoticias}`)
         .then((fetchData) => {
             return fetchData.json()
@@ -27,11 +30,12 @@ function insereNoticiasNaPagina() {
                         JSON.parse(element.imagens).image_intro,
                         element.introducao,
                         element.data_publicacao,
-                        element.editorias)
+                        element.editorias,
+                        element.link)
             });
         })
 
-    function gerarConteudo(titulo, imagem, introducao, data, editoria) {
+    function gerarConteudo(titulo, imagem, introducao, data, editoria, link) {
         const ul = document.getElementById("lista-noticias")
         const li = document.createElement("li")
         const div = document.createElement("div")
@@ -44,21 +48,24 @@ function insereNoticiasNaPagina() {
         const p = document.createElement("p")
         const p2 = document.createElement("p")
         const p3 = document.createElement("p")
+        const a = document.createElement("a")
         const button = document.createElement("button")
         button.id = "button-leia-mais"
+        a.href = link
+        button.textContent = "Leia mais"
+        a.appendChild(button)
         img.src = imagem
         h2.textContent = titulo
         p.textContent = introducao
         p2.textContent = "#" + editoria
         p3.textContent = retornaDiferencaData(data)
-        button.textContent = "Leia mais"
         div3.appendChild(p2)
         div3.appendChild(p3)
         div.appendChild(img)
         div2.appendChild(h2)
         div2.appendChild(p)
         div2.appendChild(div3)
-        div2.appendChild(button)
+        div2.appendChild(a)
         div.appendChild(div2)
         li.appendChild(div)
         ul.appendChild(li)
