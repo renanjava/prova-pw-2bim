@@ -1,23 +1,30 @@
-history.pushState(null, null, window.location.pathname + "?qtd=10");
-
 const urlSearchParams = new URLSearchParams(location.search)
-const quantidadeNoticias = urlSearchParams.get("qtd")
-
+if (urlSearchParams.get("page") == null)
+    history.pushState(null, null, window.location.pathname + "?qtd=10");
 insereNoticiasNaPagina()
 
 function insereNoticiasNaPagina() {
+    const urlSearchParams = new URLSearchParams(location.search)
+    const pagina = urlSearchParams.get("page")
+    let quantidadeNoticias = (pagina > 1 ? urlSearchParams.get("qtd") * pagina : urlSearchParams.get("qtd"))
     fetch(`https://servicodados.ibge.gov.br/api/v3/noticias/?qtd=${quantidadeNoticias}`)
         .then((fetchData) => {
             return fetchData.json()
         })
         .then((jsonData) => {
             jsonData.items.forEach(element => {
-                gerarConteudo(element.titulo,
-                    "https://agenciadenoticias.ibge.gov.br/" +
-                    JSON.parse(element.imagens).image_intro,
-                    element.introducao,
-                    element.data_publicacao,
-                    element.editorias)
+                if (quantidadeNoticias > 10) {
+                    quantidadeNoticias--
+                } else {
+                    console.log(quantidadeNoticias)
+                    gerarConteudo(
+                        element.titulo,
+                        "https://agenciadenoticias.ibge.gov.br/" +
+                        JSON.parse(element.imagens).image_intro,
+                        element.introducao,
+                        element.data_publicacao,
+                        element.editorias)
+                }
             });
         })
 
@@ -74,7 +81,7 @@ function retornaDiferencaData(data) {
         if (diferencaTempo < 30)
             diferencaTipo = "dias"
         else {
-            diferencaTempo = Math.floor(moment.duration(diferenca).asMouths())
+            diferencaTempo = Math.floor(moment.duration(diferenca).asMonths())
             diferencaTipo = (diferencaTempo == 1 ? "mes" : "meses")
         }
     } else {
@@ -93,5 +100,11 @@ function retornaDiferencaData(data) {
 }
 
 function atualizaPage() {
-
+    const urlSearchParams = new URLSearchParams(location.search)
+    paginaAtual = urlSearchParams.get("page")
+    if (paginaAtual == null || paginaAtual == 0) {
+        window.location.href = window.location.pathname + '?qtd=10&page=2'
+    } else {
+        window.location.href = window.location.pathname + `?qtd=10&page=${parseInt(paginaAtual) + 1}`
+    }
 }
