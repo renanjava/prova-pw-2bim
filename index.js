@@ -1,6 +1,11 @@
 const urlSearchParams = new URLSearchParams(location.search)
-if (urlSearchParams.get("page") == null)
-    history.pushState(null, null, window.location.pathname + "?qtd=10");
+const paginaAtual = urlSearchParams.get("page")
+if (paginaAtual == null) {
+    history.pushState(null, null, window.location.pathname + "?qtd=10")
+    document.getElementById("1").disabled = true
+} else {
+    document.getElementById(paginaAtual).disabled = true
+}
 insereNoticiasNaPagina()
 
 function insereNoticiasNaPagina() {
@@ -13,10 +18,9 @@ function insereNoticiasNaPagina() {
         })
         .then((jsonData) => {
             jsonData.items.forEach(element => {
-                if (quantidadeNoticias > 10) {
+                if (quantidadeNoticias > 10)
                     quantidadeNoticias--
-                } else {
-                    console.log(quantidadeNoticias)
+                else
                     gerarConteudo(
                         element.titulo,
                         "https://agenciadenoticias.ibge.gov.br/" +
@@ -24,7 +28,6 @@ function insereNoticiasNaPagina() {
                         element.introducao,
                         element.data_publicacao,
                         element.editorias)
-                }
             });
         })
 
@@ -99,12 +102,6 @@ function retornaDiferencaData(data) {
     return "Publicado há " + diferencaTempo + " " + diferencaTipo
 }
 
-function atualizaPage() {
-    const urlSearchParams = new URLSearchParams(location.search)
-    paginaAtual = urlSearchParams.get("page")
-    if (paginaAtual == null || paginaAtual == 0) {
-        window.location.href = window.location.pathname + '?qtd=10&page=2'
-    } else {
-        window.location.href = window.location.pathname + `?qtd=10&page=${parseInt(paginaAtual) + 1}`
-    }
+function atualizaPage(pagina) {
+    window.location.href = window.location.pathname + `?qtd=10&page=${pagina}`
 }
