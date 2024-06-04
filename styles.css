@@ -57,8 +57,12 @@ header button {
 
 li {
     list-style: none;
-    margin-bottom: 40px
 }
+
+main li {
+    margin-bottom: 40px;
+}
+
 
 img {
     height: 190px;
@@ -105,9 +109,10 @@ p {
 .paginacao {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 5px;
+    margin: 0px;
+    padding-bottom: 20px;
     background-color: #f0f0f0;
+    gap: 10px;
 }
 
 .paginacao button {
@@ -132,8 +137,4 @@ p {
     background-color: #d4d4d4;
     color: black;
     border-color: transparent
-}
-
-#button-leia-mais:hover {
-    opacity: 0.8;
 }

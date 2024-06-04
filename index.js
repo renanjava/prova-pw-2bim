@@ -1,12 +1,16 @@
 const urlSearchParams = new URLSearchParams(location.search)
-const paginaAtual = urlSearchParams.get("page")
+const paginaAtual = parseInt(urlSearchParams.get("page"))
 
 insereNoticiasNaPagina()
 
-//const divPaginacao = document.getElementById("paginacao")
-//const arrayBotoes = []
+const listaPaginacao = document.getElementById("paginacao")
+if (paginaAtual == null || (paginaAtual > 0 && paginaAtual < 6))
+    for (let i = 1; i < 11; i++)
+        listaPaginacao.appendChild(criaBotaoPaginacao(i))
+else
+    for (let i = paginaAtual - 4; i < paginaAtual + 6; i++)
+        listaPaginacao.appendChild(criaBotaoPaginacao(i))
 
-//divPaginacao.appendChild(arrayBotoes)
 if (paginaAtual == null) {
     history.pushState(null, null, window.location.pathname + "?qtd=10")
     document.getElementById("1").disabled = true
@@ -111,4 +115,14 @@ function retornaDiferencaData(data) {
 
 function atualizaPage(pagina) {
     window.location.href = window.location.pathname + `?qtd=10&page=${pagina}`
+}
+
+function criaBotaoPaginacao(id) {
+    const li = document.createElement("li")
+    const botao = document.createElement("button")
+    botao.id = id
+    botao.textContent = id
+    botao.onclick = function () { atualizaPage(id); };
+    li.appendChild(botao)
+    return li
 }
