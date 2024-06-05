@@ -1,17 +1,18 @@
 const urlSearchParams = new URLSearchParams(location.search)
-const paginaAtual = parseInt(urlSearchParams.get("page"))
+const paginaAtual = parseInt(urlSearchParams.get("page")) || 0
+console.log(paginaAtual)
 
 insereNoticiasNaPagina()
 
 const listaPaginacao = document.getElementById("paginacao")
-if (paginaAtual == null || (paginaAtual > 0 && paginaAtual < 6))
+if (paginaAtual == 0 || (paginaAtual > 0 && paginaAtual < 6))
     for (let i = 1; i < 11; i++)
         listaPaginacao.appendChild(criaBotaoPaginacao(i))
 else
     for (let i = paginaAtual - 4; i < paginaAtual + 6; i++)
         listaPaginacao.appendChild(criaBotaoPaginacao(i))
 
-if (paginaAtual == null) {
+if (paginaAtual == 0) {
     history.pushState(null, null, window.location.pathname + "?qtd=10")
     document.getElementById("1").disabled = true
 } else
@@ -19,7 +20,7 @@ if (paginaAtual == null) {
 
 function insereNoticiasNaPagina() {
     let quantidadeNoticias = (paginaAtual > 1 ? urlSearchParams.get("qtd") * paginaAtual : urlSearchParams.get("qtd"))
-    fetch(`https://servicodados.ibge.gov.br/api/v3/noticias/?qtd=${quantidadeNoticias}`)
+    fetch(`https://servicodados.ibge.gov.br/api/v3/noticias/?qtd=${quantidadeNoticias || 10}`)
         .then((fetchData) => {
             return fetchData.json()
         })
