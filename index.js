@@ -2,7 +2,8 @@ const urlSearchParams = new URLSearchParams(location.search)
 const paginaAtual = parseInt(urlSearchParams.get("page")) || 0
 console.log(paginaAtual)
 
-insereNoticiasNaPagina()
+let qtd = (paginaAtual > 1 ? urlSearchParams.get("qtd") * paginaAtual : urlSearchParams.get("qtd"))
+insereNoticiasNaPagina(qtd)
 
 const listaPaginacao = document.getElementById("paginacao")
 if (paginaAtual == 0 || (paginaAtual > 0 && paginaAtual < 6))
@@ -12,22 +13,26 @@ else
     for (let i = paginaAtual - 4; i < paginaAtual + 6; i++)
         listaPaginacao.appendChild(criaBotaoPaginacao(i))
 
-if (paginaAtual == 0) {
+if (paginaAtual == 0 && urlSearchParams.get("busca") == null) {
     history.pushState(null, null, window.location.pathname + "?qtd=10")
     document.getElementById("1").disabled = true
 } else
     document.getElementById(paginaAtual).disabled = true
 
-function insereNoticiasNaPagina() {
-    let quantidadeNoticias = (paginaAtual > 1 ? urlSearchParams.get("qtd") * paginaAtual : urlSearchParams.get("qtd"))
-    fetch(`https://servicodados.ibge.gov.br/api/v3/noticias/?qtd=${quantidadeNoticias || 10}`)
+function insereNoticiasNaPagina(qtd) {
+    const urlIBGE = new URLSearchParams("https://servicodados.ibge.gov.br/api/v3/noticias/");
+    urlIBGE.set("qtd", qtd)
+    const stringUrl = urlIBGE.toString()
+    const urlDecodificada = decodeURIComponent(stringUrl)
+    console.log(urlDecodificada)
+    fetch(urlDecodificada)
         .then((fetchData) => {
             return fetchData.json()
         })
         .then((jsonData) => {
             jsonData.items.forEach(element => {
-                if (quantidadeNoticias > 10)
-                    quantidadeNoticias--
+                if (qtd > 10)
+                    qtd--
                 else
                     gerarConteudo(
                         element.titulo,
@@ -126,4 +131,12 @@ function criaBotaoPaginacao(id) {
     botao.onclick = function () { atualizaPage(id); };
     li.appendChild(botao)
     return li
+}
+
+function buscarNoticia(event) {
+    event.preventDefault()
+    const form = document.querySelector('#busca-noticia')
+    const formData = new FormData(form)
+    const busca = formData.get("busca")
+    window.location.href = window.location.pathname + `?qtd=10&busca=${busca}`
 }

@@ -10,14 +10,14 @@
 
 <body>
     <header>
-        <form>
+        <form id="busca-noticia" onsubmit="buscarNoticia(event)">
             <h1>
                 Portal de Notícias do IBGE
             </h1>
 
-            <input type="text" placeholder="Buscar noticia por termo">
+            <input type="text" placeholder="Buscar noticia por termo" name="busca">
         </form>
-        <button>
+        <button form="busca-noticia">
             🔍
         </button>
         <svg width="20" height="20" fill="#f0f0f0" viewBox="0 0 80 90" focusable="false"
