@@ -21,9 +21,8 @@ if (paginaAtual == 0 && urlSearchParams.get("busca") == null) {
 
 function insereNoticiasNaPagina(qtd) {
     const urlIBGE = new URLSearchParams("https://servicodados.ibge.gov.br/api/v3/noticias/");
-    urlIBGE.set("qtd", qtd)
-    const stringUrl = urlIBGE.toString()
-    const urlDecodificada = decodeURIComponent(stringUrl)
+    urlIBGE.set("qtd", qtd || 10)
+    const urlDecodificada = decodeURIComponent(urlIBGE).replace("=","").replace("&","?")
     console.log(urlDecodificada)
     fetch(urlDecodificada)
         .then((fetchData) => {
