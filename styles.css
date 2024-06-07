@@ -53,6 +53,7 @@ header button {
     padding-bottom: 4px;
     padding-left: 4px;
     border-color: transparent;
+    cursor: pointer;
 }
 
 li {
@@ -123,6 +124,7 @@ p {
     border-color: #4682b4;
     border-radius: 5px;
     color: #4682b4;
+    cursor: pointer;
 }
 
 .paginacao button:hover,
@@ -136,5 +138,64 @@ p {
     height: 20px;
     background-color: #d4d4d4;
     color: black;
-    border-color: transparent
+    border-color: transparent;
+    cursor: pointer;
+}
+
+dialog {
+    width: 575px;
+    height: 220px;
+    padding: 0px;
+}
+
+dialog div div {
+    width: 240px;
+}
+
+.dialog-form {
+    height: 62px;
+    display: flex;
+    justify-content: space-around;
+    padding: 0px 25px;
+    gap: 10px;
+}
+
+dialog select {
+    width: 240px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+}
+
+.close {
+    width: 13px;
+    height: 23px;
+    color: black;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 3.5px;
+    cursor: pointer;
+
+}
+
+dialog button {
+    width: 490px;
+    height: 38px;
+    background-color: #4682b4;
+    color: white;
+    border-radius: 5px;
+    border-color: transparent;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+dialog form {
+    width: 508px;
+    padding: 25px;
+    padding-top: 22px;
+    padding-bottom: 0px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }

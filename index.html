@@ -20,14 +20,58 @@
         <button form="busca-noticia">
             🔍
         </button>
-        <svg width="20" height="20" fill="#f0f0f0" viewBox="0 0 80 90" focusable="false"
-            xmlns="http://www.w3.org/2000/svg">
+        <svg onclick=" abrirDialog()" width="20" height="20" fill="#f0f0f0" viewBox="0 0 80 90" focusable="false"
+            xmlns="http://www.w3.org/2000/svg" cursor="pointer">
             <path d="m 0,0 30,45 0,30 10,15 0,-45 30,-45 Z"></path>
         </svg>
+
     </header>
     <main>
-        <dialog close>
-            dialog que abre quando clica no filtro
+        <dialog id="dialog" close>
+            <span class="close" onclick="fecharDialog()">&times;</span>
+            <form>
+                <div class="dialog-form">
+                    <div>
+                        <label for="tipo">
+                            Tipo:
+                        </label>
+                        <select name="tipo" id="tipo" value="Selecione">
+                            <option value="Notícia">Notícia</option>
+                            <option value="Release">Release</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="tipo">
+                            Quantidade:
+                        </label>
+                        <select name="tipo" id="tipo" value="Selecione">
+                            <option value="Notícia">Notícia</option>
+                            <option value="Release">Release</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="dialog-form">
+                    <div>
+                        <label for="tipo">
+                            De:
+                        </label>
+                        <select name="tipo" id="tipo" value="Selecione">
+                            <option value="Notícia">Notícia</option>
+                            <option value="Release">Release</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="tipo">
+                            Até:
+                        </label>
+                        <select name="tipo" id="tipo" value="Selecione">
+                            <option value="Notícia">Notícia</option>
+                            <option value="Release">Release</option>
+                        </select>
+                    </div>
+                </div>
+                <button>Aplicar</button>
+            </form>
         </dialog>
         <ul id="lista-noticias">
         </ul>

@@ -1,9 +1,10 @@
 const urlSearchParams = new URLSearchParams(location.search)
 const paginaAtual = parseInt(urlSearchParams.get("page")) || 0
+const busca = urlSearchParams.get("busca")
 console.log(paginaAtual)
 
 let qtd = (paginaAtual > 1 ? urlSearchParams.get("qtd") * paginaAtual : urlSearchParams.get("qtd"))
-insereNoticiasNaPagina(qtd)
+insereNoticiasNaPagina(qtd, busca)
 
 const listaPaginacao = document.getElementById("paginacao")
 if (paginaAtual == 0 || (paginaAtual > 0 && paginaAtual < 6))
@@ -19,10 +20,12 @@ if (paginaAtual == 0 && urlSearchParams.get("busca") == null) {
 } else
     document.getElementById(paginaAtual).disabled = true
 
-function insereNoticiasNaPagina(qtd) {
+function insereNoticiasNaPagina(qtd, busca) {
     const urlIBGE = new URLSearchParams("https://servicodados.ibge.gov.br/api/v3/noticias/");
     urlIBGE.set("qtd", qtd || 10)
-    const urlDecodificada = decodeURIComponent(urlIBGE).replace("=","").replace("&","?")
+    if (busca)
+        urlIBGE.set("busca", busca)
+    const urlDecodificada = decodeURIComponent(urlIBGE).replace("=", "").replace("&", "?")
     console.log(urlDecodificada)
     fetch(urlDecodificada)
         .then((fetchData) => {
@@ -106,9 +109,11 @@ function retornaDiferencaData(data) {
     } else {
         diferencaTempo = Math.floor(moment.duration(diferenca).asHours())
         if (diferencaTempo < 1) {
+            diferencaTipo = "minutos"
             diferencaTempo = Math.floor(moment.duration(diferenca).asMinutes())
-            if (diferencaMinutos < 1) {
-                diferencaTempo = diferencaMeses = Math.floor(moment.duration(diferenca).asSeconds())
+            if (diferencaTempo < 1) {
+                diferencaTipo = "segundos"
+                diferencaTempo = Math.floor(moment.duration(diferenca).asSeconds())
             }
         } else {
             diferencaTipo = (diferencaTempo == 1 ? "hora" : "horas")
@@ -138,4 +143,14 @@ function buscarNoticia(event) {
     const formData = new FormData(form)
     const busca = formData.get("busca")
     window.location.href = window.location.pathname + `?qtd=10&busca=${busca}`
+}
+
+function abrirDialog() {
+    const dialog = document.getElementById("dialog")
+    dialog.showModal()
+}
+
+function fecharDialog() {
+    const dialog = document.getElementById("dialog")
+    dialog.close()
 }
