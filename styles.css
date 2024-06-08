@@ -37,7 +37,7 @@ main {
     background-color: #f0f0f0;
 }
 
-form input {
+#busca-noticia input {
     padding-right: 493px;
     padding-top: 7px;
     padding-bottom: 7px;
@@ -160,7 +160,8 @@ dialog div div {
     gap: 10px;
 }
 
-dialog select {
+dialog select,
+dialog input[type="date"] {
     width: 240px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -198,4 +199,8 @@ dialog form {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+dialog input[type="date"]{
+    width: 230px;
 }
