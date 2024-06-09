@@ -14,7 +14,7 @@ else
     for (let i = paginaAtual - 4; i < paginaAtual + 6; i++)
         listaPaginacao.appendChild(criaBotaoPaginacao(i))
 
-if (paginaAtual == 0 && urlSearchParams.get("busca") == null) {
+if (paginaAtual == 0 && urlSearchParams.get("busca") == null && urlSearchParams.get("tipo") == null) {
     history.pushState(null, null, window.location.pathname + "?qtd=10")
     document.getElementById("1").disabled = true
 } else
@@ -33,7 +33,7 @@ function insereNoticiasNaPagina(qtd, busca) {
         })
         .then((jsonData) => {
             jsonData.items.forEach(element => {
-                if (qtd > 10)
+                if (qtd > urlSearchParams.get("qtd"))
                     qtd--
                 else
                     gerarConteudo(
