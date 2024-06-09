@@ -24,7 +24,6 @@ insereNoticiasNaPagina(qtd, busca).then(count => {
     else if(Math.ceil(count / qtd) > 10)
         for (let i = paginaAtual - 4; i < paginaAtual + 6; i++)
             listaPaginacao.appendChild(criaBotaoPaginacao(i))
-    console.log(urlSearchParams.get("qtd"))
     if(count < 11){
         if(urlSearchParams.get("qtd") == 5 && urlSearchParams.get("page") == 2)
             listaPaginacao.appendChild(criaBotaoPaginacao("2"))
