@@ -14,7 +14,10 @@ const paginaAtual = parseInt(urlSearchParams.get("page")) || 0
 
 let qtd = (paginaAtual > 1 ? urlSearchParams.get("qtd") * paginaAtual : urlSearchParams.get("qtd"))
 let busca = urlSearchParams.get("busca")
-insereNoticiasNaPagina(qtd, busca).then(count => {
+let tipo = urlSearchParams.get("tipo")
+let de = urlSearchParams.get("de")
+let ate = urlSearchParams.get("ate")
+insereNoticiasNaPagina(qtd, busca, tipo, de, ate).then(count => {
     const quantidadeBotoes = Math.ceil(count / urlSearchParams.get("qtd"))
     console.log(count + " noticias")
     console.log(quantidadeBotoes + " botoes")
@@ -37,11 +40,17 @@ insereNoticiasNaPagina(qtd, busca).then(count => {
         document.getElementById(paginaAtual || "1").disabled = true
     })
 
-async function insereNoticiasNaPagina(qtd, busca) {
+async function insereNoticiasNaPagina(qtd, busca, tipo, de, ate) {
     const urlIBGE = new URLSearchParams("https://servicodados.ibge.gov.br/api/v3/noticias/");
     urlIBGE.set("qtd", qtd || 10)
     if(busca)
         urlIBGE.set("busca", busca)
+    if(tipo)
+        urlIBGE.set("tipo", tipo)
+    if(de)
+        urlIBGE.set("de", de)
+    if(ate)
+        urlIBGE.set("ate", ate)
     const urlDecodificada = decodeURIComponent(urlIBGE).replace("=", "").replace("&", "?")
     const fetchData = await fetch(urlDecodificada);
     const jsonData = await fetchData.json();
