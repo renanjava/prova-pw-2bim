@@ -15,15 +15,17 @@ const paginaAtual = parseInt(urlSearchParams.get("page")) || 0
 let qtd = (paginaAtual > 1 ? urlSearchParams.get("qtd") * paginaAtual : urlSearchParams.get("qtd"))
 let busca = urlSearchParams.get("busca")
 insereNoticiasNaPagina(qtd, busca).then(count => {
+    const quantidadeBotoes = Math.ceil(count / urlSearchParams.get("qtd"))
     console.log(count + " noticias")
-    console.log(Math.ceil(count / qtd) + " botoes")
+    console.log(quantidadeBotoes + " botoes")
     const listaPaginacao = document.getElementById("paginacao")
     if (paginaAtual == 0 || (paginaAtual > 0 && paginaAtual < 6))
-        for (let i = 0; i < (Math.ceil(count / qtd) > 9 ? 10 : Math.ceil(count / qtd)); i++)
+        for (let i = 0; i < (quantidadeBotoes > 9 ? 10 : quantidadeBotoes); i++)
             listaPaginacao.appendChild(criaBotaoPaginacao(i+1))
-    else if(Math.ceil(count / qtd) > 10)
-        for (let i = paginaAtual - 4; i < paginaAtual + 6; i++)
+    else if(quantidadeBotoes > 10)
+        for (let i = (quantidadeBotoes - paginaAtual < 5 ? quantidadeBotoes - 9 : paginaAtual - 4); i < (paginaAtual + 6 < quantidadeBotoes + 1 ? paginaAtual + 6 : quantidadeBotoes + 1); i++)
             listaPaginacao.appendChild(criaBotaoPaginacao(i))
+            
     if(count < 11){
         if(urlSearchParams.get("qtd") == 5 && urlSearchParams.get("page") == 2)
             listaPaginacao.appendChild(criaBotaoPaginacao("2"))
@@ -47,7 +49,7 @@ async function insereNoticiasNaPagina(qtd, busca) {
     jsonData.items.forEach(element => {
         if (qtd > urlSearchParams.get("qtd")) 
             qtd--;
-        else 
+        else if(element.imagens)
             gerarConteudo(
                 element.titulo,
                 "https://agenciadenoticias.ibge.gov.br/" +
