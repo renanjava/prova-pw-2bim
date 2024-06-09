@@ -124,7 +124,9 @@ function retornaDiferencaData(data) {
 }
 
 function atualizaPage(pagina) {
-    window.location.href = window.location.pathname + `?qtd=10&page=${pagina}`
+    const urlSearchParams = new URLSearchParams(location.search)
+    urlSearchParams.set("page",pagina)
+    window.location.href = window.location.pathname +'?'+ urlSearchParams
 }
 
 function criaBotaoPaginacao(id) {
