@@ -1,10 +1,21 @@
 const urlSearchParams = new URLSearchParams(location.search)
+
+if(urlSearchParams.get("de") == "" || urlSearchParams.get("ate") == "" || urlSearchParams.get("busca") == ""){
+    if(urlSearchParams.get("de") == "")
+        urlSearchParams.delete("de")
+    if(urlSearchParams.get("ate") == "")
+        urlSearchParams.delete("ate")
+    if(urlSearchParams.get("busca") == "")
+        urlSearchParams.delete("busca")
+    window.location.href = window.location.pathname +'?'+ urlSearchParams
+}
+
 const paginaAtual = parseInt(urlSearchParams.get("page")) || 0
-const busca = urlSearchParams.get("busca")
-console.log(paginaAtual)
+
+    
 
 let qtd = (paginaAtual > 1 ? urlSearchParams.get("qtd") * paginaAtual : urlSearchParams.get("qtd"))
-insereNoticiasNaPagina(qtd, busca)
+insereNoticiasNaPagina(qtd)
 
 const listaPaginacao = document.getElementById("paginacao")
 if (paginaAtual == 0 || (paginaAtual > 0 && paginaAtual < 6))
@@ -22,11 +33,9 @@ if (paginaAtual == 0 && urlSearchParams.get("busca") == null && urlSearchParams.
     
 
 
-function insereNoticiasNaPagina(qtd, busca) {
+function insereNoticiasNaPagina(qtd) {
     const urlIBGE = new URLSearchParams("https://servicodados.ibge.gov.br/api/v3/noticias/");
     urlIBGE.set("qtd", qtd || 10)
-    if (busca)
-        urlIBGE.set("busca", busca)
     const urlDecodificada = decodeURIComponent(urlIBGE).replace("=", "").replace("&", "?")
     console.log(urlDecodificada)
     fetch(urlDecodificada)
@@ -161,4 +170,19 @@ function abrirDialog() {
 function fecharDialog() {
     const dialog = document.getElementById("dialog")
     dialog.close()
+}
+
+function filtroSvg(event){
+    //event.preventDefault()
+    const form = document.querySelector('#filtro-svg')
+    const formData = new FormData(form)
+    const urlSearchParams = new URLSearchParams(location.search)
+    console.log(formData.get("de"))
+    if(formData.get("de"))
+        urlSearchParams.set("de",formData.get("de"))
+
+    if(formData.get("ate"))
+        urlSearchParams.set("ate",formData.get("ate"))
+
+    window.location.href = window.location.pathname +'?'+ urlSearchParams
 }
