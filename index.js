@@ -14,11 +14,13 @@ else
     for (let i = paginaAtual - 4; i < paginaAtual + 6; i++)
         listaPaginacao.appendChild(criaBotaoPaginacao(i))
 
-if (paginaAtual == 0 && urlSearchParams.get("busca") == null && urlSearchParams.get("tipo") == null) {
+if (paginaAtual == 0 && urlSearchParams.get("busca") == null && urlSearchParams.get("tipo") == null){
     history.pushState(null, null, window.location.pathname + "?qtd=10")
     document.getElementById("1").disabled = true
-} else
-    document.getElementById(paginaAtual).disabled = true
+}else
+    document.getElementById(paginaAtual || "1").disabled = true
+    
+
 
 function insereNoticiasNaPagina(qtd, busca) {
     const urlIBGE = new URLSearchParams("https://servicodados.ibge.gov.br/api/v3/noticias/");
@@ -32,6 +34,7 @@ function insereNoticiasNaPagina(qtd, busca) {
             return fetchData.json()
         })
         .then((jsonData) => {
+            console.log(jsonData.items.length)
             jsonData.items.forEach(element => {
                 if (qtd > urlSearchParams.get("qtd"))
                     qtd--
@@ -144,7 +147,10 @@ function buscarNoticia(event) {
     const form = document.querySelector('#busca-noticia')
     const formData = new FormData(form)
     const busca = formData.get("busca")
-    window.location.href = window.location.pathname + `?qtd=10&busca=${busca}`
+    const urlSearchParams = new URLSearchParams(location.search)
+    urlSearchParams.set("busca",busca)
+    urlSearchParams.delete('page')
+    window.location.href = window.location.pathname +'?'+ urlSearchParams
 }
 
 function abrirDialog() {
