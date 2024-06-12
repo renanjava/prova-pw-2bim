@@ -138,11 +138,11 @@ function retornaDiferencaData(data) {
     } else {
         diferencaTempo = Math.floor(moment.duration(diferenca).asHours())
         if (diferencaTempo < 1) {
-            diferencaTipo = "minutos"
             diferencaTempo = Math.floor(moment.duration(diferenca).asMinutes())
+            diferencaTipo = (diferencaTempo == 1 ? "minuto" : "minutos")
             if (diferencaTempo < 1) {
-                diferencaTipo = "segundos"
                 diferencaTempo = Math.floor(moment.duration(diferenca).asSeconds())
+                diferencaTipo = (diferencaTempo == 1 ? "segundo" : "segundos")
             }
         } else {
             diferencaTipo = (diferencaTempo == 1 ? "hora" : "horas")
