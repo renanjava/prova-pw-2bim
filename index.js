@@ -123,7 +123,7 @@ function retornaDiferencaData(data) {
     diferencaTempo = Math.floor(moment.duration(diferenca).asDays())
 
     if (diferencaTempo == 1)
-        diferencaTipo = "dia"
+        return "Publicado ontem"
     else if (diferencaTempo > 1) {
         if (diferencaTempo < 30)
             diferencaTipo = "dias"
@@ -132,18 +132,7 @@ function retornaDiferencaData(data) {
             diferencaTipo = (diferencaTempo == 1 ? "mes" : "meses")
         }
     } else {
-        diferencaTempo = Math.floor(moment.duration(diferenca).asHours())
-        if (diferencaTempo < 1) {
-            diferencaTempo = Math.floor(moment.duration(diferenca).asMinutes())
-            diferencaTipo = (diferencaTempo == 1 ? "minuto" : "minutos")
-            if (diferencaTempo < 1) {
-                diferencaTempo = Math.floor(moment.duration(diferenca).asSeconds())
-                diferencaTipo = (diferencaTempo == 1 ? "segundo" : "segundos")
-            }
-        } else {
-            diferencaTipo = (diferencaTempo == 1 ? "hora" : "horas")
-        }
-
+        return "Publicado hoje"
     }
     return "Publicado há " + diferencaTempo + " " + diferencaTipo
 }
