@@ -1,77 +1,79 @@
-const urlSearchParams = new URLSearchParams(location.search)
+const urlSearchParams = new URLSearchParams(location.search);
 
-if(urlSearchParams.get("de") == "" || urlSearchParams.get("ate") == "" || urlSearchParams.get("busca") == ""){
-    if(urlSearchParams.get("de") == "")
-        urlSearchParams.delete("de")
-    if(urlSearchParams.get("ate") == "")
-        urlSearchParams.delete("ate")
-    if(urlSearchParams.get("busca") == "")
-        urlSearchParams.delete("busca")
-    window.location.href = window.location.pathname +'?'+ urlSearchParams
+if (urlSearchParams.get("de") == "" || urlSearchParams.get("ate") == "" || urlSearchParams.get("busca") == "") {
+    if (urlSearchParams.get("de") == "") urlSearchParams.delete("de");
+    if (urlSearchParams.get("ate") == "") urlSearchParams.delete("ate");
+    if (urlSearchParams.get("busca") == "") urlSearchParams.delete("busca");
+    window.location.href = window.location.pathname + '?' + urlSearchParams;
 }
 
-const paginaAtual = parseInt(urlSearchParams.get("page")) || 0
+const paginaAtual = parseInt(urlSearchParams.get("page")) || 1;
 
-let qtd = (paginaAtual > 1 ? urlSearchParams.get("qtd") * paginaAtual : urlSearchParams.get("qtd"))
-let busca = urlSearchParams.get("busca")
-let tipo = urlSearchParams.get("tipo")
-let de = urlSearchParams.get("de")
-let ate = urlSearchParams.get("ate")
-insereNoticiasNaPagina(qtd, busca, tipo, de, ate).then(count => {
-    const quantidadeBotoes = Math.ceil(count / urlSearchParams.get("qtd"))
-    console.log(count + " noticias")
-    console.log(quantidadeBotoes + " botoes")
-    const listaPaginacao = document.getElementById("paginacao")
-    if (paginaAtual == 0 || (paginaAtual > 0 && paginaAtual < 6))
-        for (let i = 0; i < (quantidadeBotoes > 9 ? 10 : quantidadeBotoes); i++)
-            listaPaginacao.appendChild(criaBotaoPaginacao(i+1))
-    else if(quantidadeBotoes > 10)
-        for (let i = (quantidadeBotoes - paginaAtual < 5 ? quantidadeBotoes - 9 : paginaAtual - 4); i < (paginaAtual + 6 < quantidadeBotoes + 1 ? paginaAtual + 6 : quantidadeBotoes + 1); i++)
-            listaPaginacao.appendChild(criaBotaoPaginacao(i))
-            
-    if(count < 11){
-        if(urlSearchParams.get("qtd") == 5 && urlSearchParams.get("page") == 2)
-            listaPaginacao.appendChild(criaBotaoPaginacao("2"))
+let qtd = parseInt(urlSearchParams.get("qtd")) || 10;
+let busca = urlSearchParams.get("busca");
+let tipo = urlSearchParams.get("tipo");
+let de = urlSearchParams.get("de");
+let ate = urlSearchParams.get("ate");
+
+insereNoticiasNaPagina(qtd, busca, tipo, de, ate, paginaAtual).then(count => {
+    const quantidadeBotoes = Math.ceil(count / qtd);
+    console.log(count + " noticias");
+    console.log(quantidadeBotoes + " botoes");
+    const listaPaginacao = document.getElementById("paginacao");
+    if (paginaAtual == 1 || (paginaAtual > 1 && paginaAtual < 6)) {
+        for (let i = 0; i < (quantidadeBotoes > 9 ? 10 : quantidadeBotoes); i++) {
+            listaPaginacao.appendChild(criaBotaoPaginacao(i + 1));
+        }
+    } else if (quantidadeBotoes > 10) {
+        for (let i = (quantidadeBotoes - paginaAtual < 5 ? quantidadeBotoes - 9 : paginaAtual - 4); i < (paginaAtual + 6 < quantidadeBotoes + 1 ? paginaAtual + 6 : quantidadeBotoes + 1); i++) {
+            listaPaginacao.appendChild(criaBotaoPaginacao(i));
+        }
     }
-    if (paginaAtual == 0 && urlSearchParams.get("busca") == null && urlSearchParams.get("tipo") == null){
-        history.pushState(null, null, window.location.pathname + "?qtd=10")
-        document.getElementById("1").disabled = true
-    }else
-        document.getElementById(paginaAtual || "1").disabled = true
-    })
 
-async function insereNoticiasNaPagina(qtd, busca, tipo, de, ate) {
-    const urlIBGE = new URLSearchParams("https://servicodados.ibge.gov.br/api/v3/noticias/");
-    urlIBGE.set("qtd", qtd || 10)
-    if(busca)
-        urlIBGE.set("busca", busca)
-    if(tipo)
-        urlIBGE.set("tipo", tipo)
-    if(de)
-        urlIBGE.set("de", de)
-    if(ate)
-        urlIBGE.set("ate", ate)
-    const urlDecodificada = decodeURIComponent(urlIBGE).replace("=", "").replace("&", "?")
+    if (count < 11) {
+        if (qtd == 5 && paginaAtual == 2) {
+            listaPaginacao.appendChild(criaBotaoPaginacao("2"));
+        }
+    }
+    if (paginaAtual == 1 && !busca && !tipo) {
+        history.pushState(null, null, window.location.pathname + "?qtd=10");
+        document.getElementById("1").disabled = true;
+    } else {
+        document.getElementById(paginaAtual.toString()).disabled = true;
+    }
+});
+
+async function insereNoticiasNaPagina(qtd, busca, tipo, de, ate, paginaAtual) {
+    const urlIBGE = new URL("https://servicodados.ibge.gov.br/api/v3/noticias/");
+    const params = new URLSearchParams();
+    params.set("qtd", qtd);
+    params.set("page", paginaAtual);
+    if (busca) params.set("busca", busca);
+    if (tipo) params.set("tipo", tipo);
+    if (de) params.set("de", de);
+    if (ate) params.set("ate", ate);
+
+    urlIBGE.search = params.toString();
+    const urlDecodificada = urlIBGE.toString();
+    console.log(urlDecodificada);
     const fetchData = await fetch(urlDecodificada);
     const jsonData = await fetchData.json();
 
     jsonData.items.forEach(element => {
-        if (qtd > urlSearchParams.get("qtd")) 
-            qtd--;
-        else if(element.imagens)
-            gerarConteudo(
-                element.titulo,
-                "https://agenciadenoticias.ibge.gov.br/" +
-                JSON.parse(element.imagens).image_intro,
-                element.introducao,
-                element.data_publicacao,
-                element.editorias,
-                element.link
-            );
+        if(element.imagens)
+        gerarConteudo(
+            element.titulo,
+            "https://agenciadenoticias.ibge.gov.br/" + JSON.parse(element.imagens).image_intro,
+            element.introducao,
+            element.data_publicacao,
+            element.editorias,
+            element.link
+        );
     });
 
     return parseInt(jsonData.count);
 }
+
 
     function gerarConteudo(titulo, imagem, introducao, data, editoria, link) {
         const ul = document.getElementById("lista-noticias")
@@ -115,15 +117,9 @@ async function insereNoticiasNaPagina(qtd, busca, tipo, de, ate) {
 
 function retornaDiferencaData(data) {
     const dataAtual = new Date().toLocaleString('pt-BR', { timezone: 'UTC' }).replace(",", "")
-    let dataPublicacao = ""
-    let horaPublicacao = ""
-    for (let i = 0; i < 10; i++) {
-        if (i < 9)
-            dataPublicacao += data[i]
-        horaPublicacao += data[i + 9]
-    }
+    const dataPublicada = moment(data).format("DD/MM/YYYY HH:mm:ss")
 
-    var diferenca = moment(dataAtual, "DD/MM/YYYY HH:mm:ss").diff(moment(data, "DD/MM/YYYY HH:mm:ss"))
+    var diferenca = moment(dataAtual, "DD/MM/YYYY HH:mm:ss").diff(moment(dataPublicada, "DD/MM/YYYY HH:mm:ss"))
     diferencaTempo = Math.floor(moment.duration(diferenca).asDays())
 
     if (diferencaTempo == 1)

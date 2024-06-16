@@ -221,3 +221,106 @@ dialog form {
 dialog input[type="date"]{
     width: 230px;
 }
+
+@media (max-width: 1024px) {
+    .div-imagem-noticia {
+        margin: 10px 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    #lista-noticias li{
+        padding-bottom: 400px;
+    }
+
+    #busca-noticia input {
+        padding-right: 230px;
+    }
+
+    header button {
+        margin-left: 370px;
+    }
+
+    .div-imagem-noticia {
+        margin: 10px 50px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+
+    .div-conteudo-noticia {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .div-informacao-noticia2 {
+        position: initial;
+    }
+
+    dialog {
+        width: 400px;
+    }
+
+    dialog button {
+        margin: 0px;
+        width: 280px;
+        height: 30px;
+    }
+
+    dialog form {
+        width: 350px;
+    }
+
+    dialog select,
+    dialog input[type="date"] {
+        width: 120px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 2.5px;
+    }
+
+    dialog div div {
+        width: 120px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    #lista-noticias li{
+        padding-bottom: 350px;
+    }
+
+    .div-imagem-noticia {
+        margin: 10px 10px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+
+    .div-conteudo-noticia {
+        width: 100%;
+        min-width: auto;
+    }
+
+    #busca-noticia input {
+        padding-right: 170px;
+    }
+
+    header button {
+        margin-left: 310px;
+    }
+    header h1{
+        font-size: 20px;
+        margin-top: 28px;
+        margin-bottom: 28px;
+    }
+}
