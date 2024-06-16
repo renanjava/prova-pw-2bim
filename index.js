@@ -134,7 +134,7 @@ function retornaDiferencaData(data) {
     } else {
         return "Publicado hoje"
     }
-    return "Publicado há " + diferencaTempo + " " + diferencaTipo
+    return "Publicado "+ diferencaTempo + " " + diferencaTipo + " atrás"
 }
 
 function atualizaPage(pagina) {
